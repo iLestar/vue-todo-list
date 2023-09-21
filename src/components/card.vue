@@ -44,9 +44,7 @@ export default {
   },
   methods: {
     changeStateTodo(index: number) {
-      console.log(index)
       const find = this.todoList.splice(index, 1)[0]
-      console.log(find)
       localStorage.setItem('todoList', JSON.stringify(Array.from(this.todoList)))
       this.doneList.push(find)
       localStorage.setItem('doneList', JSON.stringify(Array.from(this.doneList)))
