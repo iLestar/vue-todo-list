@@ -1,11 +1,12 @@
 <script lang="ts">
-import { IconSend } from '@tabler/icons-vue'
+import { IconCheck, IconSend } from '@tabler/icons-vue'
 import { ref, onMounted } from 'vue'
 
 export default {
-  components: { IconSend },
+  components: { IconSend, IconCheck },
   setup() {
     const todoList = ref([] as string[])
+    const doneList = ref([] as string[])
     const handleSubmit = (e: Event) => {
       e.preventDefault()
 
@@ -26,10 +27,30 @@ export default {
         })
       }
     })
+    onMounted(() => {
+      const storage = localStorage.getItem('doneList')
+      if (storage) {
+        const arrayTodo: [] = JSON.parse(storage)
+        arrayTodo.forEach((value) => {
+          doneList.value.push(value)
+        })
+      }
+    })
     return {
       todoList,
       handleSubmit,
+      doneList,
     }
+  },
+  methods: {
+    changeStateTodo(index: number) {
+      console.log(index)
+      const find = this.todoList.splice(index, 1)[0]
+      console.log(find)
+      localStorage.setItem('todoList', JSON.stringify(Array.from(this.todoList)))
+      this.doneList.push(find)
+      localStorage.setItem('doneList', JSON.stringify(Array.from(this.doneList)))
+    },
   },
 }
 </script>
@@ -49,11 +70,22 @@ export default {
         </section>
       </form>
       <section>
-        <h2>Tareas</h2>
-        <section class="min-h[3rem] max-h-72 overflow-y-auto flex flex-col">
-          <div v-for="(item, index) in todoList" :key="index">
-            <span> {{ `${index + 1}. ${item}` }}</span>
-          </div>
+        <section>
+          <h2>Tareas por hacer</h2>
+          <section class="min-h[3rem] max-h-72 overflow-y-auto flex flex-col">
+            <div v-for="(item, index) in todoList" :key="index" class="flex justify-between pr-4">
+              <span> {{ `${index + 1}. ${item}` }} </span>
+              <button type="button" @click="changeStateTodo(index)"><IconCheck color="#2fb344" /></button>
+            </div>
+          </section>
+        </section>
+        <section>
+          <h2>Tareas completas</h2>
+          <section class="min-h[3rem] max-h-72 overflow-y-auto flex flex-col">
+            <div v-for="(item, index) in doneList" :key="index" class="">
+              <span>{{ `${index + 1}. ${item}` }}</span>
+            </div>
+          </section>
         </section>
       </section>
     </section>
