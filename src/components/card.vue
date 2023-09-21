@@ -12,7 +12,6 @@ export default {
       const formData = new FormData(e.currentTarget as HTMLFormElement)
       const todoValue = formData.get('todo') as string
       todoList.value.push(todoValue)
-      todoList.value.flat(Infinity)
       localStorage.setItem('todoList', JSON.stringify(todoList.value))
 
       const inputEl = document.querySelector('#todo') as HTMLInputElement
