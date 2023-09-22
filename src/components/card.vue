@@ -1,6 +1,7 @@
 <script lang="ts">
 import { IconCheck, IconSend, IconEraser } from '@tabler/icons-vue'
 import { ref, onMounted } from 'vue'
+import { TypeOfTodo } from '../enums/card.enums'
 
 export default {
   components: { IconSend, IconCheck, IconEraser },
@@ -50,10 +51,10 @@ export default {
       localStorage.setItem('doneList', JSON.stringify(Array.from(this.doneList)))
     },
     deleteTodo(index: number, listType: string) {
-      if (listType === 'incomplete') {
+      if (listType === TypeOfTodo.todoList) {
         this.todoList.splice(index, 1)
         localStorage.setItem('todoList', JSON.stringify(Array.from(this.todoList)))
-      } else if (listType === 'complete') {
+      } else if (listType === TypeOfTodo.doneList) {
         this.doneList.splice(index, 1)
         localStorage.setItem('doneList', JSON.stringify(Array.from(this.doneList)))
       }
